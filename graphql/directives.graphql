@@ -1,0 +1,142 @@
+"""
+Fetch all Eloquent models and return the collection as the result.
+"""
+directive @all(
+    """
+    Specify the class name of the model to use.
+    This is only needed when the default model detection does not work.
+    """
+    model: String
+
+    """
+    Apply scopes to the underlying query.
+    """
+    scopes: [String!]
+) on FIELD_DEFINITION
+
+"""
+Resolves a field through the Eloquent `BelongsTo` relationship.
+"""
+directive @belongsTo(
+    """
+    Specify the relationship method name in the model class,
+    if it is named different from the field in the schema.
+    """
+    relation: String
+
+    """
+    Apply scopes to the underlying query.
+    """
+    scopes: [String!]
+) on FIELD_DEFINITION
+
+"""
+Use the client given value to add an equal conditional to a database query.
+"""
+directive @eq(
+    """
+    Specify the database column to compare.
+    Only required if database column has a different name than the attribute in your schema.
+    """
+    key: String
+) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+"""
+Find a model based on the arguments provided.
+"""
+directive @find(
+"""
+Specify the class name of the model to use.
+This is only needed when the default model detection does not work.
+"""
+model: String
+
+"""
+Apply scopes to the underlying query.
+"""
+scopes: [String!]
+) on FIELD_DEFINITION
+
+"""
+Corresponds to [the Eloquent relationship HasMany](https://laravel.com/docs/eloquent-relationships#one-to-many).
+"""
+directive @hasMany(
+    """
+    Specify the relationship method name in the model class,
+    if it is named different from the field in the schema.
+    """
+    relation: String
+
+    """
+    Apply scopes to the underlying query.
+    """
+    scopes: [String!]
+
+    """
+    Allows to resolve the relation as a paginated list.
+    Allowed values: `paginator`, `connection`.
+    """
+    type: String
+
+    """
+    Allow clients to query paginated lists without specifying the amount of items.
+    Overrules the `pagination.default_count` setting from `lighthouse.php`.
+    """
+    defaultCount: Int
+
+    """
+    Limit the maximum amount of items that clients can request from paginated lists.
+    Overrules the `pagination.max_count` setting from `lighthouse.php`.
+    """
+    maxCount: Int
+) on FIELD_DEFINITION
+
+"""
+Query multiple model entries as a paginated list.
+"""
+directive @paginate(
+    """
+    Which pagination style to use.
+    Allowed values: `paginator`, `connection`.
+    """
+    type: String = "paginator"
+
+    """
+    Specify the class name of the model to use.
+    This is only needed when the default model detection does not work.
+    """
+    model: String
+
+    """
+    Point to a function that provides a Query Builder instance.
+    This replaces the use of a model.
+    """
+    builder: String
+
+    """
+    Apply scopes to the underlying query.
+    """
+    scopes: [String!]
+
+    """
+    Allow clients to query paginated lists without specifying the amount of items.
+    Overrules the `pagination.default_count` setting from `lighthouse.php`.
+    """
+    defaultCount: Int
+
+    """
+    Limit the maximum amount of items that clients can request from paginated lists.
+    Overrules the `pagination.max_count` setting from `lighthouse.php`.
+    """
+    maxCount: Int
+) on FIELD_DEFINITION
+
+"""
+Reference a class implementing a scalar definition.
+"""
+directive @scalar(
+    """
+    Reference to a class that extends `\GraphQL\Type\Definition\ScalarType`.
+    """
+    class: String!
+) on SCALAR
